@@ -1,0 +1,9 @@
+version: "3"
+
+tasks:
+  dev:
+    cmds:
+      - cmd: air
+  templ:
+    cmds:
+      - cmd: templ generate
