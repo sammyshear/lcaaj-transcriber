@@ -2,6 +2,13 @@ package views
 
 templ IndexPage() {
 	@BaseLayout(PageInfo{}) {
-		<div>Hello, World!</div>
+		<main>
+			<input name="data" placeholder="Type what you want transcribed" type="text" data-on-input__debounce.1000ms="@get('/api/transcribe')" data-bind-data/>
+			<span id="result"></span>
+		</main>
 	}
+}
+
+templ Transcription(state string) {
+	<span id="result">{ state }</span>
 }
