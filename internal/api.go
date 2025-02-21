@@ -3,7 +3,9 @@ package internal
 import (
 	"fmt"
 	"net/http"
+	"regexp"
 	"strings"
+	"unicode/utf8"
 
 	"github.com/sammyshear/lcaaj-transcriber/views"
 	datastar "github.com/starfederation/datastar/sdk/go"
@@ -11,6 +13,86 @@ import (
 
 type dataSignal struct {
 	Data string `json:"data"`
+}
+
+type RegexpKey struct {
+	*regexp.Regexp
+	name string
+}
+
+var basicMap = map[string]string{
+	"3": "ə",
+	"1": "ɪ",
+	"6": "ʌ",
+	".": "ː",
+}
+
+const (
+	VOWELS                   = "([aeiouəɪʌ])"
+	VOWELS_FULL              = "([aeiouəɪʌ][\\x{0306}\\x{0303}\\x{031E}\\x{031D}\\x{0320}\\x{031F}]?)"
+	CONSONANTS               = "([bcdfghjklmnprstvwxzʃʒ(tʃ)][\\x{207F}]?)"
+	HUSHED_CONSONANTS        = "([csz])"
+	NASAL_RELEASE_CONSONANTS = "([bdfgkptv])"
+	UNVOICING_CONSONANTS     = "([bdgjlmnrvwz])"
+	VOICING_CONSONANTS       = "([cfhkpstx])"
+	VELARIZING_CONSONANTS    = "([bdgjlmnrvwfhkptx])"
+	PALATALIZING_CONSONANTS  = "([bdgjlmnrvwfhkptxsczʃʒ(tʃ)ʂ̻ʐ̻(tʂ̻)])"
+)
+
+var hushedMap = map[string]string{
+	"s": "ʃ",
+	"z": "ʒ",
+	"c": "tʃ",
+}
+
+var semiHushedMap = map[string]string{
+	"s": "ʂ̻",
+	"c": "tʂ̻",
+	"z": "ʐ̻",
+}
+
+var vowelKeys = []RegexpKey{
+	{regexp.MustCompile(VOWELS + "(94)"), "diacShort"},
+	{regexp.MustCompile(VOWELS + "(\\+)"), "diacNasal"},
+	{regexp.MustCompile(VOWELS + "(4)"), "diacLower"},
+	{regexp.MustCompile(VOWELS + "(5)"), "diacRaise"},
+	{regexp.MustCompile(VOWELS + "(7)"), "diacBack"},
+	{regexp.MustCompile(VOWELS + "(8)"), "diacFront"},
+	{regexp.MustCompile(VOWELS_FULL + "(,)(,)"), "diacStress"},
+	{regexp.MustCompile(VOWELS_FULL + "(,)"), "diacSecondaryStress"},
+}
+
+var consKeys = []RegexpKey{
+	{regexp.MustCompile(HUSHED_CONSONANTS + "(\\+)"), "diacHushing"},
+	{regexp.MustCompile(HUSHED_CONSONANTS + "(7)"), "diacSemiHushing"},
+	{regexp.MustCompile(UNVOICING_CONSONANTS + "(2)"), "diacUnvoicing"},
+	{regexp.MustCompile(VOICING_CONSONANTS + "(2)"), "diacVoicing"},
+	{regexp.MustCompile(VELARIZING_CONSONANTS + "(7)"), "diacVelarizing"},
+	{regexp.MustCompile(PALATALIZING_CONSONANTS + "(8)"), "diacPalatalized"},
+	{regexp.MustCompile(NASAL_RELEASE_CONSONANTS + "(\\+)"), "diacNasalRelease"},
+	{regexp.MustCompile(CONSONANTS + "(,)"), "diacSyllab"},
+}
+
+var vowelsMap = map[string]string{
+	vowelKeys[0].name: "%c\u0306",
+	vowelKeys[1].name: "%c\u0303",
+	vowelKeys[2].name: "%c\u031E",
+	vowelKeys[3].name: "%c\u031D",
+	vowelKeys[4].name: "%c\u0320",
+	vowelKeys[5].name: "%c\u031F",
+	vowelKeys[6].name: "\u02C8%c",
+	vowelKeys[7].name: "\u02CC%c",
+}
+
+var consMap = map[string]string{
+	consKeys[0].name: "hushed",
+	consKeys[1].name: "semi-hushed",
+	consKeys[2].name: "%c\u0325",
+	consKeys[3].name: "%c\u032C",
+	consKeys[4].name: "%c\u02E0",
+	consKeys[5].name: "%c\u02B2",
+	consKeys[6].name: "%c\u207F",
+	consKeys[7].name: "%c\u0329",
 }
 
 func Transcribe(w http.ResponseWriter, r *http.Request) {
@@ -21,96 +103,62 @@ func Transcribe(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var sb strings.Builder
 	sse := datastar.NewSSE(w, r)
+	o := strings.ToLower(data.Data)
 
-	fmt.Printf("Data: %s\n", data.Data)
-
-	for i, char := range data.Data {
-		switch char {
-		case 'A':
-			sb.WriteString("a")
-		case 'E':
-			sb.WriteString("e")
-		case 'I':
-			sb.WriteString("i")
-		case 'O':
-			sb.WriteString("o")
-		case 'U':
-			sb.WriteString("u")
-		case '3':
-			sb.WriteString("ә")
-		case '1':
-			sb.WriteString("ɽ")
-		case '6':
-			sb.WriteString("ʌ")
-		case '.':
-			sb.WriteString("ː")
-		case '9':
-			switch data.Data[i+1] {
-			case '4':
-				sb.WriteString("◌̆")
-			case '5':
-				sb.WriteString("ʔ")
-			}
-		case '4':
-			continue
-		case '5':
-			continue
-		case ',':
-			sb.WriteString("ˌ")
-		case '+':
-			sb.WriteString("◌̃")
-		case 'B':
-			sb.WriteString("b")
-		case 'C':
-			sb.WriteString("c")
-		case 'D':
-			sb.WriteString("d")
-		case 'F':
-			sb.WriteString("f")
-		case 'G':
-			sb.WriteString("g")
-		case 'H':
-			sb.WriteString("h")
-		case 'J':
-			sb.WriteString("j")
-		case 'K':
-			sb.WriteString("k")
-		case 'L':
-			if data.Data[i+1] == '5' {
-				sb.WriteString("ɬ")
-			} else {
-				sb.WriteString("l")
-			}
-		case 'M':
-			sb.WriteString("m")
-		case 'N':
-			sb.WriteString("n")
-		case 'P':
-			sb.WriteString("p")
-		case 'R':
-			sb.WriteString("r")
-		case 'S':
-			sb.WriteString("s")
-		case 'T':
-			sb.WriteString("t")
-		case 'V':
-			sb.WriteString("v")
-		case 'W':
-			sb.WriteString("w")
-		case 'X':
-			sb.WriteString("x")
-		case 'Z':
-			sb.WriteString("z")
-		default:
-			sb.WriteRune(char)
-		}
+	for k, v := range basicMap {
+		o = strings.ReplaceAll(o, k, v)
 	}
 
-	output := sb.String()
+	for _, k := range vowelKeys {
+		v := vowelsMap[k.name]
+		o = k.ReplaceAllStringFunc(o, func(s string) string {
+			r, _ := utf8.DecodeRuneInString(s)
+			_, lastSize := utf8.DecodeLastRuneInString(s)
+			woLastRune := s[:len(s)-lastSize]
+			if c, size := utf8.DecodeLastRuneInString(woLastRune); c != r && size != 0 && c != ',' && c != '9' {
+				return fmt.Sprintf(v+"%c", r, c)
+			} else if c == ',' {
+				woLastRune = woLastRune[:len(woLastRune)-size]
+				if cr, size := utf8.DecodeLastRuneInString(woLastRune); cr != r && size != 0 {
+					return fmt.Sprintf(v+"%c", r, cr)
+				}
+			} else if c == '9' {
+				woLastRune = woLastRune[:len(woLastRune)-size]
+				if cr, size := utf8.DecodeLastRuneInString(woLastRune); cr != r && size != 0 {
+					return fmt.Sprintf(v+"%c", r, cr)
+				}
+			}
+			return fmt.Sprintf(v, r)
+		})
+	}
 
-	fmt.Printf("Result: %s\n", output)
+	for _, k := range consKeys {
+		v := consMap[k.name]
+		o = k.ReplaceAllStringFunc(o, func(s string) string {
+			r, _ := utf8.DecodeRuneInString(s)
+			switch v {
+			case "hushed":
+				for key, val := range hushedMap {
+					if string(r) == key {
+						return val
+					}
+				}
+			case "semi-hushed":
+				for key, val := range semiHushedMap {
+					if string(r) == key {
+						return val
+					}
+				}
+			}
+			_, lastSize := utf8.DecodeLastRuneInString(s)
+			woLastRune := s[:len(s)-lastSize]
+			if c, size := utf8.DecodeLastRuneInString(woLastRune); c != r && size != 0 {
+				return fmt.Sprintf(v+"%c", r, c)
+			}
+			return fmt.Sprintf(v, r)
+		})
+	}
 
-	sse.MergeFragmentTempl(views.Transcription(output), datastar.WithSelectorID("result"))
+	sse.MergeFragmentTempl(views.Transcription(o), datastar.WithSelectorID("result"))
 }
