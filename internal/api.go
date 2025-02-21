@@ -30,7 +30,7 @@ var basicMap = map[string]string{
 const (
 	VOWELS                   = "([aeiouəɪʌ])"
 	VOWELS_FULL              = "([aeiouəɪʌ][\\x{0306}\\x{0303}\\x{031E}\\x{031D}\\x{0320}\\x{031F}]?)"
-	CONSONANTS               = "([bcdfghjklmnprstvwxzʃʒ(tʃ)][\\x{207F}]?)"
+	CONSONANTS               = "([ʔbcdfghjklmnprstvwxzʃʒ(tʃ)ʂ̻ʐ̻(tʂ̻)][\\x{207F}\\x{02B2}\\x{02E0}]?)"
 	HUSHED_CONSONANTS        = "([csz])"
 	NASAL_RELEASE_CONSONANTS = "([bdfgkptv])"
 	UNVOICING_CONSONANTS     = "([bdgjlmnrvwz])"
@@ -58,6 +58,7 @@ var vowelKeys = []RegexpKey{
 	{regexp.MustCompile(VOWELS + "(5)"), "diacRaise"},
 	{regexp.MustCompile(VOWELS + "(7)"), "diacBack"},
 	{regexp.MustCompile(VOWELS + "(8)"), "diacFront"},
+	{regexp.MustCompile(VOWELS_FULL + "(95)"), "diacSyllabEnd"},
 	{regexp.MustCompile(VOWELS_FULL + "(,)(,)"), "diacStress"},
 	{regexp.MustCompile(VOWELS_FULL + "(,)"), "diacSecondaryStress"},
 }
@@ -80,8 +81,9 @@ var vowelsMap = map[string]string{
 	vowelKeys[3].name: "%c\u031D",
 	vowelKeys[4].name: "%c\u0320",
 	vowelKeys[5].name: "%c\u031F",
-	vowelKeys[6].name: "\u02C8%c",
-	vowelKeys[7].name: "\u02CC%c",
+	vowelKeys[6].name: "%c.",
+	vowelKeys[7].name: "\u02C8%c",
+	vowelKeys[8].name: "\u02CC%c",
 }
 
 var consMap = map[string]string{
@@ -158,7 +160,9 @@ func Transcribe(w http.ResponseWriter, r *http.Request) {
 			}
 			return fmt.Sprintf(v, r)
 		})
-	}
 
-	sse.MergeFragmentTempl(views.Transcription(o), datastar.WithSelectorID("result"))
+		o := strings.ReplaceAll(o, "95", "ʔ")
+
+		sse.MergeFragmentTempl(views.Transcription(o), datastar.WithSelectorID("result"))
+	}
 }
