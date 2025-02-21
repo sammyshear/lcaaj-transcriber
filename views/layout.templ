@@ -8,6 +8,25 @@ type PageInfo struct {
 	ImageAlt    string
 }
 
+css MainClass() {
+	align-items: center;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	font-size: 64px;
+	font-family: Noto Serif;
+}
+
+css InputClass() {
+	width: 100%;
+	padding: 12px 20px;
+	margin: 8px 0;
+	display: inline-block;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-sizing: border-box;
+}
+
 templ BaseLayout(pageInfo PageInfo) {
 	<html lang="en">
 		<head>
@@ -18,6 +37,7 @@ templ BaseLayout(pageInfo PageInfo) {
 			<title>{ pageInfo.Title }</title>
 			<meta property="og:title" content={ pageInfo.Title }/>
 			<meta property="og:description" content={ pageInfo.Description }/>
+			<link rel="stylesheet" href="/styles/templ.css"/>
 			<script type="module" src="https://cdn.jsdelivr.net/gh/starfederation/datastar@v1.0.0-beta.7/bundles/datastar.js"></script>
 		</head>
 		<body>

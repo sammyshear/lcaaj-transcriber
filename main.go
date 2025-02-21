@@ -16,5 +16,7 @@ func main() {
 	mux.Handle("/", templ.Handler(views.IndexPage()))
 	mux.HandleFunc("/api/transcribe", internal.Transcribe)
 
-	log.Fatal(http.ListenAndServe(":8080", mux))
+	handler := templ.NewCSSMiddleware(mux, views.MainClass(), views.InputClass())
+
+	log.Fatal(http.ListenAndServe(":8080", handler))
 }

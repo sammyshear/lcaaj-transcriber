@@ -2,8 +2,8 @@ package views
 
 templ IndexPage() {
 	@BaseLayout(PageInfo{}) {
-		<main>
-			<input name="data" placeholder="Type what you want transcribed" type="text" data-on-input__debounce.1000ms="@get('/api/transcribe')" data-bind-data/>
+		<main class={ MainClass() }>
+			<input class={ InputClass() } name="data" placeholder="Type what you want transcribed" type="text" data-on-input__debounce.1000ms="@get('/api/transcribe')" data-bind-data/>
 			<span id="result"></span>
 		</main>
 	}
