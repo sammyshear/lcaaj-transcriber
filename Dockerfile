@@ -1,4 +1,4 @@
-FROM golang:1.23-bookworm AS base
+FROM golang:1.24-bookworm AS base
 
 # Move to working directory /build
 WORKDIR /build
