@@ -2,12 +2,14 @@ module github.com/sammyshear/lcaaj-transcriber
 
 go 1.23.5
 
-require github.com/starfederation/datastar v0.21.4
+require (
+	github.com/a-h/templ v0.3.833
+	github.com/go-chi/chi/v5 v5.2.1
+	github.com/starfederation/datastar v0.21.4
+)
 
 require (
-	github.com/a-h/templ v0.3.833 // indirect
 	github.com/delaneyj/gostar v0.8.0 // indirect
-	github.com/go-chi/chi/v5 v5.2.1 // indirect
 	github.com/goccy/go-json v0.10.4 // indirect
 	github.com/igrmk/treemap/v2 v2.0.1 // indirect
 	github.com/samber/lo v1.47.0 // indirect
