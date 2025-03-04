@@ -14,7 +14,8 @@ func main() {
 	mux := chi.NewMux()
 
 	mux.Handle("/", templ.Handler(views.IndexPage()))
-	mux.HandleFunc("/api/transcribe", internal.Transcribe)
+	mux.Post("/api/transcribe", internal.ApiTranscribe)
+	mux.HandleFunc("/api/dtranscribe", internal.DatastarTranscribe)
 
 	handler := templ.NewCSSMiddleware(mux, views.MainClass(), views.InputClass())
 

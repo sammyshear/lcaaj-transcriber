@@ -81,7 +81,7 @@ func IndexPage() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "\" name=\"data\" placeholder=\"Type what you want transcribed\" type=\"text\" data-on-input__debounce.1000ms=\"@get(&#39;/api/transcribe&#39;)\" data-bind-data> <span id=\"result\"></span>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "\" name=\"data\" placeholder=\"Type what you want transcribed\" type=\"text\" data-on-input__debounce.1000ms=\"@get(&#39;/api/dtranscribe&#39;)\" data-bind-data> <span id=\"result\"></span>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

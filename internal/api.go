@@ -1,7 +1,9 @@
 package internal
 
 import (
+	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"regexp"
 	"strings"
@@ -200,16 +202,7 @@ var consMap = map[string]string{
 	consKeys[7].name: "%c\u0329",
 }
 
-func Transcribe(w http.ResponseWriter, r *http.Request) {
-	data := &dataSignal{}
-	err := datastar.ReadSignals(r, data)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-
-	sse := datastar.NewSSE(w, r)
-
+func Transcribe(data *dataSignal) string {
 	o := data.Data
 
 	for _, k := range notKeys {
@@ -285,5 +278,27 @@ func Transcribe(w http.ResponseWriter, r *http.Request) {
 
 	o = strings.ReplaceAll(o, "\\,", ",")
 	o = strings.ReplaceAll(o, "\\:", ".")
+	return o
+}
+
+func ApiTranscribe(w http.ResponseWriter, r *http.Request) {
+	data := &dataSignal{}
+	b, err := io.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+	}
+	json.Unmarshal(b, data)
+	w.Write([]byte(Transcribe(data)))
+}
+
+func DatastarTranscribe(w http.ResponseWriter, r *http.Request) {
+	data := &dataSignal{}
+	err := datastar.ReadSignals(r, data)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	sse := datastar.NewSSE(w, r)
+	o := Transcribe(data)
 	sse.MergeFragmentTempl(views.Transcription(o), datastar.WithSelectorID("result"))
 }

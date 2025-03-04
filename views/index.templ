@@ -3,7 +3,7 @@ package views
 templ IndexPage() {
 	@BaseLayout(PageInfo{}) {
 		<main class={ MainClass() }>
-			<input class={ InputClass() } name="data" placeholder="Type what you want transcribed" type="text" data-on-input__debounce.1000ms="@get('/api/transcribe')" data-bind-data/>
+			<input class={ InputClass() } name="data" placeholder="Type what you want transcribed" type="text" data-on-input__debounce.1000ms="@get('/api/dtranscribe')" data-bind-data/>
 			<span id="result"></span>
 			<p class={ TipClass() }>If something is not looking how you'd expect you can: 1. submit an issue on <a href="https://github.com/sammyshear/lcaaj-transcriber">GitHub</a>, 2. if it is something to do with notation, try adding a "QP" after the notation, that might work.</p>
 		</main>
