@@ -56,26 +56,26 @@ var semiHushedMap = map[string]string{
 }
 
 var vowelKeys = []RegexpKey{
-	{regexp.MustCompile(VOWELS + "(94)"), "diacShort"},
-	{regexp.MustCompile(VOWELS + "(\\+)"), "diacNasal"},
-	{regexp.MustCompile(VOWELS + "(4)"), "diacLower"},
-	{regexp.MustCompile(VOWELS + "(5)"), "diacRaise"},
-	{regexp.MustCompile(VOWELS + "(7)"), "diacBack"},
-	{regexp.MustCompile(VOWELS + "(8)"), "diacFront"},
-	{regexp.MustCompile(VOWELS_FULL + "(95)"), "diacSyllabEnd"},
-	{regexp.MustCompile(VOWELS_FULL + "(,)(,)"), "diacStress"},
-	{regexp.MustCompile(VOWELS_FULL + "(,)"), "diacSecondaryStress"},
+	{regexp.MustCompile(VOWELS + "(94)"), "%c\u0306"},
+	{regexp.MustCompile(VOWELS + "(\\+)"), "%c\u0303"},
+	{regexp.MustCompile(VOWELS + "(4)"), "%c\u031E"},
+	{regexp.MustCompile(VOWELS + "(5)"), "%c\u031D"},
+	{regexp.MustCompile(VOWELS + "(7)"), "%c\u0320"},
+	{regexp.MustCompile(VOWELS + "(8)"), "%c\u031F"},
+	{regexp.MustCompile(VOWELS_FULL + "(95)"), "%c."},
+	{regexp.MustCompile(VOWELS_FULL + "(,)(,)"), "\u02C8%c"},
+	{regexp.MustCompile(VOWELS_FULL + "(,)"), "\u02CC%c"},
 }
 
 var consKeys = []RegexpKey{
-	{regexp.MustCompile(HUSHED_CONSONANTS + "(\\+)"), "diacHushing"},
-	{regexp.MustCompile(HUSHED_CONSONANTS + "(7)"), "diacSemiHushing"},
-	{regexp.MustCompile(UNVOICING_CONSONANTS + "(2)"), "diacUnvoicing"},
-	{regexp.MustCompile(VOICING_CONSONANTS + "(2)"), "diacVoicing"},
-	{regexp.MustCompile(VELARIZING_CONSONANTS + "(7)"), "diacVelarizing"},
-	{regexp.MustCompile(PALATALIZING_CONSONANTS + "(8)"), "diacPalatalized"},
-	{regexp.MustCompile(NASAL_RELEASE_CONSONANTS + "(\\+)"), "diacNasalRelease"},
-	{regexp.MustCompile(CONSONANTS + "(,)"), "diacSyllab"},
+	{regexp.MustCompile(HUSHED_CONSONANTS + "(\\+)"), "hushed"},
+	{regexp.MustCompile(HUSHED_CONSONANTS + "(7)"), "semi-hushed"},
+	{regexp.MustCompile(UNVOICING_CONSONANTS + "(2)"), "%c\u0325"},
+	{regexp.MustCompile(VOICING_CONSONANTS + "(2)"), "%c\u032C"},
+	{regexp.MustCompile(VELARIZING_CONSONANTS + "(7)"), "%c\u02E0"},
+	{regexp.MustCompile(PALATALIZING_CONSONANTS + "(8)"), "%c\u02B2"},
+	{regexp.MustCompile(NASAL_RELEASE_CONSONANTS + "(\\+)"), "%c\u207F"},
+	{regexp.MustCompile(CONSONANTS + "(,)"), "%c\u0329"},
 }
 
 // keys for notations
@@ -179,29 +179,6 @@ var notKeys = []RegexpKey{
 	{regexp.MustCompile(fmt.Sprintf(BASE_NOTATION, "Q(ZZ)")), "interviewer's comment: not elicitable"},
 }
 
-var vowelsMap = map[string]string{
-	vowelKeys[0].name: "%c\u0306",
-	vowelKeys[1].name: "%c\u0303",
-	vowelKeys[2].name: "%c\u031E",
-	vowelKeys[3].name: "%c\u031D",
-	vowelKeys[4].name: "%c\u0320",
-	vowelKeys[5].name: "%c\u031F",
-	vowelKeys[6].name: "%c.",
-	vowelKeys[7].name: "\u02C8%c",
-	vowelKeys[8].name: "\u02CC%c",
-}
-
-var consMap = map[string]string{
-	consKeys[0].name: "hushed",
-	consKeys[1].name: "semi-hushed",
-	consKeys[2].name: "%c\u0325",
-	consKeys[3].name: "%c\u032C",
-	consKeys[4].name: "%c\u02E0",
-	consKeys[5].name: "%c\u02B2",
-	consKeys[6].name: "%c\u207F",
-	consKeys[7].name: "%c\u0329",
-}
-
 func Transcribe(data *dataSignal) string {
 	o := data.Data
 
@@ -225,7 +202,7 @@ func Transcribe(data *dataSignal) string {
 	}
 
 	for _, k := range vowelKeys {
-		v := vowelsMap[k.name]
+		v := k.name
 		o = k.ReplaceAllStringFunc(o, func(s string) string {
 			r, _ := utf8.DecodeRuneInString(s)
 			_, lastSize := utf8.DecodeLastRuneInString(s)
@@ -248,7 +225,7 @@ func Transcribe(data *dataSignal) string {
 	}
 
 	for _, k := range consKeys {
-		v := consMap[k.name]
+		v := k.name
 		o = k.ReplaceAllStringFunc(o, func(s string) string {
 			r, _ := utf8.DecodeRuneInString(s)
 			switch v {
