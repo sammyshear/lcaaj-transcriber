@@ -251,6 +251,7 @@ func Transcribe(data *dataSignal) string {
 		})
 
 		o = strings.ReplaceAll(o, "95", "ʔ")
+		o = strings.ReplaceAll(o, "c", "ts")
 	}
 
 	o = strings.ReplaceAll(o, "\\,", ",")
