@@ -13,7 +13,7 @@ RUN go mod download
 COPY . .
 
 # Build the application
-RUN go build -o main
+RUN go tool templ generate; go build -o main
 
 # Document the port that may need to be published
 EXPOSE 8080
