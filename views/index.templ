@@ -6,6 +6,7 @@ templ IndexPage() {
 			<input class={ InputClass() } name="data" placeholder="Type what you want transcribed" type="text" data-on-input__debounce.1000ms="@get('/api/dtranscribe')" data-bind-data/>
 			<span id="result"></span>
 			<p class={ TipClass() }>If something is not looking how you'd expect you can: 1. submit an issue on <a href="https://github.com/sammyshear/lcaaj-transcriber">GitHub</a>, 2. if it is something to do with notation, try adding a "QP" after the notation, that might work.</p>
+			<p class={ TipClass() }>Also, please note that this uses the official LCAAJ transcription key, so it includes some things that aren't exactly the standard for IPA (i.e. /r/ just represents one of multiple possible rhotics). If you want more details, view the original transcription key <a href="https://guides.library.columbia.edu/c.php?g=730523&p=5217994">here</a>.</p>
 		</main>
 	}
 }
