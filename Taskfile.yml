@@ -3,7 +3,7 @@ version: "3"
 tasks:
   dev:
     cmds:
-      - cmd: air
+      - cmd: go tool air
   templ:
     cmds:
-      - cmd: templ generate
+      - cmd: go tool templ generate

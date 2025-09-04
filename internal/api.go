@@ -182,21 +182,6 @@ var notKeys = []RegexpKey{
 func Transcribe(data *dataSignal) string {
 	o := data.Data
 
-	for _, k := range notKeys {
-		o = k.ReplaceAllStringFunc(o, func(s string) string {
-			ans := k.name
-			if strings.HasSuffix(ans, "%s") || strings.HasSuffix(ans, "(%s)") {
-				groupIndex := k.SubexpIndex("text")
-				matches := k.FindStringSubmatch(o)
-				return fmt.Sprintf(ans, matches[groupIndex])
-			}
-
-			return k.name
-		})
-	}
-
-	o = strings.ToLower(o)
-
 	for k, v := range basicMap {
 		o = strings.ReplaceAll(o, k, v)
 	}
@@ -254,12 +239,27 @@ func Transcribe(data *dataSignal) string {
 		o = strings.ReplaceAll(o, "c", "ts")
 	}
 
+	for _, k := range notKeys {
+		o = k.ReplaceAllStringFunc(o, func(s string) string {
+			ans := k.name
+			if strings.HasSuffix(ans, "%s") || strings.HasSuffix(ans, "(%s)") {
+				groupIndex := k.SubexpIndex("text")
+				matches := k.FindStringSubmatch(o)
+				return fmt.Sprintf(ans, matches[groupIndex])
+			}
+
+			return k.name
+		})
+	}
+
+	o = strings.ToLower(o)
+
 	o = strings.ReplaceAll(o, "\\,", ",")
 	o = strings.ReplaceAll(o, "\\:", ".")
 	return o
 }
 
-func ApiTranscribe(w http.ResponseWriter, r *http.Request) {
+func APITranscribe(w http.ResponseWriter, r *http.Request) {
 	data := &dataSignal{}
 	b, err := io.ReadAll(r.Body)
 	if err != nil {
