@@ -1,3 +1,5 @@
+//go:build !structured
+
 package internal
 
 import (
