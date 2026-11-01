@@ -20,10 +20,10 @@ type PageInfo struct {
 func MainClass() templ.CSSClass {
 	templ_7745c5c3_CSSBuilder := templruntime.GetBuilder()
 	templ_7745c5c3_CSSBuilder.WriteString(`align-items:center;`)
-	templ_7745c5c3_CSSBuilder.WriteString(`display:flex;`)
 	templ_7745c5c3_CSSBuilder.WriteString(`justify-content:center;`)
+	templ_7745c5c3_CSSBuilder.WriteString(`display:flex;`)
 	templ_7745c5c3_CSSBuilder.WriteString(`flex-direction:column;`)
-	templ_7745c5c3_CSSBuilder.WriteString(`font-size:64px;`)
+	templ_7745c5c3_CSSBuilder.WriteString(`font-size:48px;`)
 	templ_7745c5c3_CSSBuilder.WriteString(`font-family:Noto Serif;`)
 	templ_7745c5c3_CSSID := templ.CSSID(`MainClass`, templ_7745c5c3_CSSBuilder.String())
 	return templ.ComponentCSSClass{
@@ -35,7 +35,19 @@ func MainClass() templ.CSSClass {
 func TipClass() templ.CSSClass {
 	templ_7745c5c3_CSSBuilder := templruntime.GetBuilder()
 	templ_7745c5c3_CSSBuilder.WriteString(`font-size:16px;`)
+	templ_7745c5c3_CSSBuilder.WriteString(`text-align:center;`)
 	templ_7745c5c3_CSSID := templ.CSSID(`TipClass`, templ_7745c5c3_CSSBuilder.String())
+	return templ.ComponentCSSClass{
+		ID:    templ_7745c5c3_CSSID,
+		Class: templ.SafeCSS(`.` + templ_7745c5c3_CSSID + `{` + templ_7745c5c3_CSSBuilder.String() + `}`),
+	}
+}
+
+func ResultClass() templ.CSSClass {
+	templ_7745c5c3_CSSBuilder := templruntime.GetBuilder()
+	templ_7745c5c3_CSSBuilder.WriteString(`font-family:DejaVu Sans;`)
+	templ_7745c5c3_CSSBuilder.WriteString(`text-align:center;`)
+	templ_7745c5c3_CSSID := templ.CSSID(`ResultClass`, templ_7745c5c3_CSSBuilder.String())
 	return templ.ComponentCSSClass{
 		ID:    templ_7745c5c3_CSSID,
 		Class: templ.SafeCSS(`.` + templ_7745c5c3_CSSID + `{` + templ_7745c5c3_CSSBuilder.String() + `}`),
@@ -76,14 +88,14 @@ func BaseLayout(pageInfo PageInfo) templ.Component {
 		ctx = templ.InitializeContext(ctx)
 		templ_7745c5c3_Var1 := templ.GetChildren(ctx)
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><meta name=\"description\" content=\"A brief description of your site\"><meta name=\"google\" content=\"notranslate\"><title>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><meta name=\"description\" content=\"LCAAJ Transcriber\"><meta name=\"google\" content=\"notranslate\"><title>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(pageInfo.Title)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/layout.templ`, Line: 41, Col: 26}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/layout.templ`, Line: 48, Col: 26}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -96,7 +108,7 @@ func BaseLayout(pageInfo PageInfo) templ.Component {
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templruntime.NewAttributeExpression(pageInfo.Title).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/layout.templ`, Line: 42, Col: 53}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/layout.templ`, Line: 49, Col: 53}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var3)
 		if templ_7745c5c3_Err != nil {
@@ -109,13 +121,13 @@ func BaseLayout(pageInfo PageInfo) templ.Component {
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templruntime.NewAttributeExpression(pageInfo.Description).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/layout.templ`, Line: 43, Col: 65}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/layout.templ`, Line: 50, Col: 65}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var4)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "\"><link rel=\"stylesheet\" href=\"/styles/templ.css\"><script type=\"module\" src=\"https://cdn.jsdelivr.net/gh/starfederation/datastar@v1.0.4/bundles/datastar.js\"></script></head><body>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "\"><link href=\"https://fonts.cdnfonts.com/css/dejavu-sans\" rel=\"stylesheet\"><link rel=\"stylesheet\" href=\"/styles/templ.css\"><script type=\"module\" src=\"https://cdn.jsdelivr.net/gh/starfederation/datastar@v1.0.4/bundles/datastar.js\"></script></head><body>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

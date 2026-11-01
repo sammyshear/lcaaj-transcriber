@@ -114,7 +114,7 @@ func IndexPage() templ.Component {
 				}
 				templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "> <span id=\"result\"></span>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, ">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -122,11 +122,11 @@ func IndexPage() templ.Component {
 				templ_7745c5c3_ElementWriter := templ_7745c5c3_Buffer
 				templ_7745c5c3_Buffer := templ.GetBuffer()
 				var templ_7745c5c3_ElementScripts []templ.ComponentScript
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<p class=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<div class=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var7 = []any{TipClass()}
+				var templ_7745c5c3_Var7 = []any{ResultClass()}
 				templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_ElementWriter, templ_7745c5c3_Var7...)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -154,7 +154,7 @@ func IndexPage() templ.Component {
 				}
 				templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, ">If something is not looking how you'd expect you can: 1. submit an issue on <a href=\"https://github.com/sammyshear/lcaaj-transcriber\">GitHub</a>, 2. if it is something to do with notation, try adding a \"QP\" after the notation, that might work.</p>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "><span id=\"result\"></span></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -194,7 +194,7 @@ func IndexPage() templ.Component {
 				}
 				templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, ">Also, please note that this uses the official LCAAJ transcription key, so it includes some things that aren't exactly the standard for IPA (i.e. /r/ just represents one of multiple possible rhotics). If you want more details, view the original transcription key <a href=\"https://guides.library.columbia.edu/c.php?g=730523&p=5217994\">here</a>.</p></main>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, ">If something is not looking how you'd expect you can: 1. submit an issue on <a href=\"https://github.com/sammyshear/lcaaj-transcriber\">GitHub</a>, 2. if it is something to do with notation, try adding a \"QP\" after the notation, that might work.<br>Also, please note that this uses the official LCAAJ transcription key, so it includes some things that aren't exactly the standard for IPA (i.e. /r/ just represents one of multiple possible rhotics). If you want more details, view the original transcription key <a href=\"https://guides.library.columbia.edu/c.php?g=730523&p=5217994\">here</a>.</p></main>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -232,7 +232,7 @@ func Transcription(state string) templ.Component {
 		var templ_7745c5c3_Var12 string
 		templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(state)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/index.templ`, Line: 15, Col: 26}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/index.templ`, Line: 20, Col: 26}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 		if templ_7745c5c3_Err != nil {
