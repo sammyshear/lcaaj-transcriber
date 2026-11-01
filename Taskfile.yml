@@ -7,3 +7,10 @@ tasks:
   templ:
     cmds:
       - cmd: go tool templ generate
+  test:
+    cmds:
+      - cmd: go test -race -cover ./...
+      - cmd: go vet ./...
+  fuzz:
+    cmds:
+      - cmd: go test ./internal -run='^$' -fuzz=FuzzTranscribe -fuzztime=30s

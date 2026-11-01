@@ -1,0 +1,96 @@
+0	question not asked
++	 yes
+-	 no
++$	 yes, but doubtful
+-$	 no, but doubtful
+=	 self-corrected
+#	 self-corrected
+*	 QFQM
+$	 query
+||	 is different from
+//ABC	(ABC)
+)+	 prompted and accepted
+)-	 prompted and rejected
+)=	 prompted and replaces preceding response
+(/	 relevant to another question number
+($	 relevant to another geographic location
+((	 reference to dictionary
+(	 relevant to problem number in dialectology
+CLN	:
+CM	,
+DRWG	drawing in protocol book
+EQ	 is identical with (in respect to some significant point)
+MISPMP	 misprompted (editor's comment)
+MISTD	 misunderstanding, informant's response does not apply to question (editor's comment)
+OVRPMP	 overprompted (editor's comment)
+SC	;
+XX	 (sic)
+QADJ	adjective
+QAMER	american yiddish development
+QANG	anglicism
+QAP	applies to
+Q-AP	does not apply to
+QB	yes, text in protocol book
+QBF	yes, fragment in book
+QCF	interviewer's comment: compare
+QDG	disgust
+QEDS	editor's query
+QEDN	editor disagrees
+QED helloQP	editor's comments follow:  hello
+QELSW	elsewhere
+QEM	emphatic
+QENG helloQP	explanation in english:  hello
+QETC	etc.
+QET	etymology supplied by informant
+QFR	yes, fragment on tape
+QF/Y	response of wife or other female bystander
+QGERM	Informant’s statement that word is not Yiddish but German
+QGLE helloQP	informant's explanation in English:  hello
+QGLY helloQP	informant's explanation in Yiddish:  hello
+QGL	gloss
+QHUM	amusing
+QHUNG	informant's statement that word is not Yiddish but Hungarian
+QH	heard but not used
+QINF	infinitive
+QI GL helloQP	Interviewer's Summary:  hello
+QI helloQP	interviewer's comments follow:  hello
+QK	known
+Q-K	unknown
+QLAT	not on tape
+QLIT	literary
+QMEMX	informant's surprise at own recollection
+QM/Y	response by husband or other male bystander
+QN	new, modern
+QNEX	did not exist
+QNN	very new
+QNOUN	noun
+QNP	unprompted answer to prompted question
+QNT	not on tape
+QOF	oldfashioned
+QOOF	Very Oldfashioned
+QOTW	Otherwise
+QPOL	Informant's statement that word is not Yiddish but Polish
+QQ	Check answer on tape
+QRR	very rare
+QRUM	Informant's statement that word is not Yiddish but Rumanian
+QRUS	Informant's statement that word is not Yiddish but Russian
+QRTR	rather
+QR	rare
+QSMT	sometimes
+QSYN	synonym
+QS helloQP	said by:  hello
+QTA	tape audited
+QTF	yes, fragment on tape
+QT	yes, text on tape
+Q-T	text not on tape
+QUU	VeryCommon
+QU	Usual
+Q-U	Unusual
+QVB	Verb
+QVL	Vulgar
+QV	Proverb
+QW helloQP	used by:  hello
+Q-W helloQP	not used by:  hello
+QYID helloQP	Informant's explanation in Yiddish but not necessarily verbatim or phonetically accurate:  hello
+QZZ	interviewer's comment: not elicitable
+QP	
